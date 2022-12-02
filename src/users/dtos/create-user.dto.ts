@@ -1,19 +1,13 @@
 import { Type } from 'class-transformer';
-import { IsEmail, IsObject, IsString, ValidateNested } from 'class-validator';
-
-class Account {
-  @IsString()
-  username: string;
-}
+import { IsEmail, IsNotEmpty, IsString, ValidateNested } from 'class-validator';
 
 export class CreateUserDto {
   @IsEmail()
   email: string;
 
-  @IsString()
+  @IsNotEmpty()
   password: string;
 
-  @Type(() => Account)
-  @ValidateNested()
-  account: Account;
+  @IsNotEmpty()
+  username: string;
 }

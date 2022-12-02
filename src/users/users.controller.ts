@@ -1,12 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Param,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
@@ -32,6 +25,7 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get(':slug')
   async findBySlug(@Param('slug') slug: string) {
     return this.usersService.findBySlug(slug);

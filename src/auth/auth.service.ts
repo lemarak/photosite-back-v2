@@ -4,15 +4,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { scrypt as _scrypt } from 'crypto';
+import { promisify } from 'util';
+import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dtos/create-user.dto';
 import { UsersService } from 'src/users/users.service';
-import { promisify } from 'util';
 
 const scrypt = promisify(_scrypt);
 
 @Injectable()
 export class AuthService {
-  constructor(private usersService: UsersService) {}
+  constructor(
+    private usersService: UsersService,
+    private jwtService: JwtService,
+  ) {}
 
   async validateUser(
     username: string,
@@ -28,5 +32,10 @@ export class AuthService {
       throw new BadRequestException('bad password');
     }
     return user;
+  }
+
+  async login(user: any) {
+    const payload = { username: user.username, sub: user.userId };
+    return { access_token: this.jwtService.sign(payload) };
   }
 }

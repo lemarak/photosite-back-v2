@@ -7,7 +7,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
-import { LocalAuthGuard } from 'src/auth/local-auth.guard';
+
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UsersService } from './users.service';
 
@@ -21,11 +21,11 @@ export class UsersController {
     return user;
   }
 
-  @Post('/login')
-  @UseGuards(LocalAuthGuard)
-  async login(@Request() req): Promise<CreateUserDto> {
-    return req.user._doc;
-  }
+  // @Post('/login')
+  // @UseGuards(LocalAuthGuard)
+  // async login(@Request() req) {
+  //   return this.authService.login(req.user);
+  // }
 
   @Get()
   async findAll() {
